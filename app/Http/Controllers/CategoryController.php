@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    private $id = 'category_id';
+    private $name = 'category_name';
+    private $cName = 'category';
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +20,7 @@ class CategoryController extends Controller
 
         $categories = Category::all();
 
-        return view('admin.categories.list', compact('categories'));
+        return view('admin.parts.list', ['id'=>$this->id,'name'=>$this->name,'objects'=>$categories,'cName'=>$this->cName,'title'=>'Список категорій']);
     }
 
     /**
@@ -23,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.parts.create',['id'=>$this->id,'name'=>$this->name,'cName'=>$this->cName,'text'=>'Категорія','title'=>'Додавання категорії']);
     }
 
     /**
@@ -38,10 +43,10 @@ class CategoryController extends Controller
             $category->category_name = $request->input('category');
             $category->save();
 
-            return redirect()->route('cat.create')->with('success', 'Категорія успішно створена');
+            return redirect()->route('category.create')->with('success', 'Категорія успішно створена');
         }
         else{
-            return redirect()->route('cat.create')->with('error', 'Поле не може бути пустим');
+            return redirect()->route('category.create')->with('error', 'Поле не може бути пустим');
         }
     }
 
@@ -61,7 +66,7 @@ class CategoryController extends Controller
 
         $category = Category::where('category_id', $id)->first();
 
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.parts.edit', ['id'=>$this->id,'name'=>$this->name,'cName'=>$this->cName,'text'=>'Категорія','title'=>'Оновлення категорії','object'=>$category]);
     }
 
     /**
@@ -76,7 +81,7 @@ class CategoryController extends Controller
 
         $category->update();
 
-        return redirect()->route('cat.index')->with('success','Категорія Змінена');
+        return redirect()->route('category.index')->with('success','Категорія Змінена');
 
     }
 
@@ -90,7 +95,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('cat.index')->with('success','Категорія Видалена');
+        return redirect()->route('category.index')->with('success','Категорія Видалена');
 
     }
 }

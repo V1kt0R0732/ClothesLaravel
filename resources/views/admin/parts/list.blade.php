@@ -45,7 +45,7 @@
         </tbody>
     </table>
     @else
-        <h3>Категорії відсутні</h3>
+        <h3>{{ $cName }} відсутні</h3>
 @endif
 @endsection
 

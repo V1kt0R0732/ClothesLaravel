@@ -3,11 +3,11 @@
 @section('content')
 
 
-    <form action="{{ route('cat.update',['cat'=>$category->category_id]) }}" method="post">
+    <form action="{{ route($cName.'.update',[$cName=>$object->$id]) }}" method="post">
         @csrf
         @method('PATCH')
-        <h5>Назва Категорії</h5>
-        <input type="text" name="category" value="{{ $category->category_name }}">
+        <h5>{{ $text }}</h5>
+        <input type="text" name="{{ $cName }}" value="{{ $object->$name }}">
         <input type="submit" name="send" value="Оновити">
     </form>
 

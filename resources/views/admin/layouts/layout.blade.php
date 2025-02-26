@@ -65,8 +65,8 @@
                         <i class="fa fa-home"></i> Категорії <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
-                        <li><a class="nav-link" href="{{ route('cat.index') }}">Всі</a></li>
-                        <li><a class="nav-link" href="{{ route('cat.create') }}">Додати</a></li>
+                        <li><a class="nav-link" href="{{ route('category.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('category.create') }}">Додати</a></li>
                     </ul>
                 </li>
 
@@ -78,6 +78,39 @@
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('color.index') }}">Всі</a></li>
                         <li><a class="nav-link" href="{{ route('color.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- Матеріали -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-pencil"></i> Матеріали <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('material.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('material.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- Сезони -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-pencil"></i> Сезони <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('season.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('season.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- Розмір -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-pencil"></i> Сезони <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('size.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('size.create') }}">Додати</a></li>
                     </ul>
                 </li>
             </ul>
