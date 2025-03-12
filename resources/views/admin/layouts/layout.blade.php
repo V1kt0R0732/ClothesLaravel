@@ -59,6 +59,18 @@
             </div>
             <hr>
             <ul class="nav flex-column">
+
+                <!-- Додавання Одягу -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-home"></i> Одяг <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('clothes.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('clothes.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
                 <!-- Категорії -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
@@ -106,11 +118,33 @@
                 <!-- Розмір -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Сезони <i class="fa fa-chevron-down float-end"></i>
+                        <i class="fa fa-pencil"></i> Розміри <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('size.index') }}">Всі</a></li>
                         <li><a class="nav-link" href="{{ route('size.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- Постачальники -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-pencil"></i> Постачальники <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('supplier.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('supplier.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- BodyShape -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="fa fa-pencil"></i> BodyShape <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('bodyshape.index') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('bodyshape.create') }}">Додати</a></li>
                     </ul>
                 </li>
             </ul>
