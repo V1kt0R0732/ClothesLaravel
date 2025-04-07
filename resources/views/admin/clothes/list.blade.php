@@ -21,6 +21,12 @@
                 <th>
                     Ціна
                 </th>
+                <th>
+                    На складі
+                </th>
+                <th>
+                    Додати на склад
+                </th>
                 <th class="id">
                     Ред
                 </th>
@@ -49,14 +55,24 @@
                         {{ $item->price }}
                     </td>
                     <td>
-                        <a href=""><i class="fa-solid fa-pencil" style="color: blue"></i></a>
+                        {{ $item->storage_count ?? '0' }}
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm">
+                            <a href="{{ route('storage.create', ['cloth_id'=>$item->cloth_id]) }}"><i class="bi bi-plus-circle" style="color:green"></i></a>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm">
+                            <a href="{{ route('clothes.edit', ['clothes'=>$item->cloth_id]) }}"><i class="bi bi-pencil" style="color:blue"></i></a>
+                        </button>
                     </td>
                     <td>
                         <form action="" method="POST" class="delete-form"  onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm delete-btn">
-                                <i class="fa-solid fa-trash" style="color:red"></i>
+                                <i class="bi bi-trash3-fill" style="color:red"></i>
                             </button>
                         </form>
                     </td>
@@ -65,7 +81,7 @@
             </tbody>
         </table>
     @else
-        <h3>{{ $cName }} відсутні</h3>
+        <h3>Загальна таблиця одягу відсутня</h3>
     @endif
 
 @endsection

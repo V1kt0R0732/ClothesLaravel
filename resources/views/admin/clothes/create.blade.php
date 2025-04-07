@@ -70,7 +70,7 @@
         </div>
 
         <!-- Кнопка отправки -->
-        <input type="submit" class="btn btn-primary" name="send" value="Добавить одежду">
+        <input type="submit" class="btn btn-primary" name="send" value="Додати одяг">
     </form>
 </div>
 

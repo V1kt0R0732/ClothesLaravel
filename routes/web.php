@@ -17,3 +17,4 @@ Route::resource('admin/size','App\Http\Controllers\SizeController');
 Route::resource('admin/supplier','App\Http\Controllers\SupplierController');
 Route::resource('admin/bodyshape','App\Http\Controllers\BodyShapeController');
 Route::resource('admin/clothes','App\Http\Controllers\ClothesController');
+Route::resource('admin/storage','App\Http\Controllers\StorageController');

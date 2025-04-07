@@ -11,6 +11,8 @@
     <!-- Font Awesome (иконки) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
     <!-- Свои стили -->
     @vite(['resources/css/style.css', 'resources/js/script.js'])
 
@@ -60,10 +62,20 @@
             <hr>
             <ul class="nav flex-column">
 
+                <!-- Додавання Конкретного товара -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="bi bi-folder"></i> Storage <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('storage.index') }}">Всі</a></li>
+                    </ul>
+                </li>
+
                 <!-- Додавання Одягу -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-home"></i> Одяг <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-bookshelf"></i> Одяг <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('clothes.index') }}">Всі</a></li>
@@ -74,7 +86,7 @@
                 <!-- Категорії -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-home"></i> Категорії <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-tags"></i> Категорії <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('category.index') }}">Всі</a></li>
@@ -85,7 +97,7 @@
                 <!-- Цвета -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Цвета <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-palette"></i> Колір <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('color.index') }}">Всі</a></li>
@@ -96,7 +108,7 @@
                 <!-- Матеріали -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Матеріали <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-postage-fill"></i> Матеріали <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('material.index') }}">Всі</a></li>
@@ -107,7 +119,7 @@
                 <!-- Сезони -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Сезони <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-cloud-sun"></i> Сезони <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('season.index') }}">Всі</a></li>
@@ -118,7 +130,7 @@
                 <!-- Розмір -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Розміри <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-rulers"></i> Розміри <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('size.index') }}">Всі</a></li>
@@ -129,7 +141,7 @@
                 <!-- Постачальники -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> Постачальники <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-truck"></i> Виробник <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('supplier.index') }}">Всі</a></li>
@@ -140,7 +152,7 @@
                 <!-- BodyShape -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
-                        <i class="fa fa-pencil"></i> BodyShape <i class="fa fa-chevron-down float-end"></i>
+                        <i class="bi bi-person-bounding-box"></i> BodyShape <i class="fa fa-chevron-down float-end"></i>
                     </a>
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('bodyshape.index') }}">Всі</a></li>

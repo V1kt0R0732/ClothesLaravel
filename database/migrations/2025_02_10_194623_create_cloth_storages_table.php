@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('storages', function (Blueprint $table) {
-            $table->id('storage_id');
-            $table->bigInteger('clothes_id')->unsigned();
+        Schema::create('storage_clothes', function (Blueprint $table) {
+            $table->id('storage_cloth_id');
+            $table->bigInteger('cloth_id')->unsigned();
             $table->bigInteger('color_id')->unsigned();
             $table->bigInteger('size_id')->unsigned();
+            $table->bigInteger('body_shape_id')->unsigned();
             $table->integer('count');
             $table->timestamps();
 
-            $table->foreign('clothes_id')->references('cloth_id')->on('clothes');
+            $table->foreign('cloth_id')->references('cloth_id')->on('clothes');
             $table->foreign('color_id')->references('color_id')->on('colors');
             $table->foreign('size_id')->references('size_id')->on('sizes');
+            $table->foreign('body_shape_id')->references('body_shape_id')->on('body_shapes');
 
         });
     }

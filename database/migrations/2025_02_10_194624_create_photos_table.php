@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('photos', function (Blueprint $table) {
             $table->id('photo_id');
             $table->string('photo_name');
-            $table->bigInteger('storage_id')->unsigned();
-            $table->integer('status');
+            $table->bigInteger('storage_cloth_id')->unsigned();
+            $table->integer('status')->default(0);
             $table->timestamps();
 
-            $table->foreign('storage_id')->references('storage_id')->on('storages');
+            $table->foreign('storage_cloth_id')->references('storage_cloth_id')->on('storage_clothes');
         });
     }
 
