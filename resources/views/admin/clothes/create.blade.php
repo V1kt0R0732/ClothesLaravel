@@ -1,4 +1,4 @@
-@extends('admin.layouts.layout', ['title'=>'Додавання одягу'])
+@extends('admin.layouts.layout', ['title'=>'Додавання загальної інформації про одяг'])
 
 @section('content')
 <div class="container mt-4">

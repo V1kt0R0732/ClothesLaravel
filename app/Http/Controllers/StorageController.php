@@ -68,7 +68,8 @@ class StorageController extends Controller
 
         }
         else{
-            $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+            $storage = StorageClothes::selectRaw('*,storage_clothes.storage_cloth_id as storage_cloth_id')
+                ->join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
                 ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
                 ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
                 ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
@@ -77,6 +78,7 @@ class StorageController extends Controller
                 ->where('photos.status', '=', 1)
                 ->orWhere('photos.status', '=', null)
                 ->get();
+            //print_r($storage);
         }
 
 

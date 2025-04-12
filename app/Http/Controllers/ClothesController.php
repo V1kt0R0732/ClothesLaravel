@@ -20,15 +20,18 @@ class ClothesController extends Controller
      */
     public function index(Request $request)
     {
+        $search = '';
+        $col = '';
 
         if(isset($request->search) && !empty($request->search)){
+            $search = $request->search;
 
             $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
                 ->join('categories','categories.category_id','=','clothes.category_id')
                 ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->where('clothes.cloth_name','like','%'.$request->search.'%')
-                ->orWhere('suppliers.supplier_name','like','%'.$request->search.'%')
-                ->orWhere('categories.category_name','like','%'.$request->search.'%')
+                ->where('clothes.cloth_name','like','%'.$search.'%')
+                ->orWhere('suppliers.supplier_name','like','%'.$search.'%')
+                ->orWhere('categories.category_name','like','%'.$search.'%')
                 ->get();
         }
         elseif(isset($request->mode) && $request->mode == 'material' && isset($request->id) && !empty($request->id)){
@@ -62,10 +65,33 @@ class ClothesController extends Controller
         }
 
 
+        if(isset($request->sort) && !empty($request->sort)){
+            $sort = $request->sort;
+        }
+        else{
+            $sort = 'asc';
+        }
+        if(isset($request->col) && !empty($request->col)){
+            $col = $request->col;
+            switch($sort){
+                case 'asc':
+                    $sort = 'desc';
+                    print_r("Asc Worked");
+                    $clothes = $clothes->SortBy($col);
+                    break;
+                case 'desc':
+                    $sort = 'asc';
+                    print_r('Desc Worked');
+                    $clothes = $clothes->SortByDesc($col);
+                    break;
+                default:
+                    $sort = 'desc';
+                    print_r("Default Worked");
+                    $clothes = $clothes->SortBy($col);
+            }
+        }
 
-
-
-        return view('admin.clothes.list', compact('clothes'));
+        return view('admin.clothes.list', compact('clothes', 'sort', 'search', 'col'));
 
     }
 

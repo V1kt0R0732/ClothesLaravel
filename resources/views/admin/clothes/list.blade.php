@@ -1,28 +1,44 @@
-@extends('admin.layouts.layout', ['title'=>'Додавання одягу'])
+@extends('admin.layouts.layout', ['title'=>'Загальні критерії одягу'])
 
 @section('content')
 
+    <div class="container-fluid mb-3">
+        <form class="d-flex" role="search" action="{{route('clothes.index')}}" method="get">
+            <input class="form-control me-2" type="text" name="search" value="{{isset($search) && !empty($search) ? $search : ''}}" placeholder="Пошук товарів" aria-label="Search">
+            @if(isset($sort) && !empty($sort) && isset($col) && !empty($col))
+                <input type="hidden" name="sort" value="{{$sort}}">
+                <input type="hidden" name="col" value="{{$col}}">
+            @endif
+            <button class="btn btn-outline-success" type="submit">Пошук</button>
+            <div class="">
+                <a class="btn btn-outline-danger" href="{{route('clothes.index')}}">Скинути</a>
+            </div>
+        </form>
+
+    </div>
+
     @if($clothes->IsNotEmpty())
+
         <table class="table">
             <thead>
             <tr>
                 <th class="id">
-                    Id
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'cloth_id'])}}">Id</a>
                 </th>
                 <th>
-                    Назва
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'cloth_name'])}}">Назва</a>
                 </th>
                 <th>
-                    Категорія
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'category_id'])}}">Категорія</a>
                 </th>
                 <th>
-                    Виробник
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'supplier_id'])}}">Виробник</a>
                 </th>
                 <th>
-                    Ціна
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'price'])}}">Ціна</a>
                 </th>
                 <th>
-                    На складі
+                    <a href="{{route('clothes.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort,'col'=>'storage_count'])}}">На складі</a>
                 </th>
                 <th>
                     Додати на склад
