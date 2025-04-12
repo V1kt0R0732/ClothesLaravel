@@ -7,6 +7,7 @@
         @csrf
         @method('PATCH')
         @include('admin.parts.form')
+        <input type="submit" name="send" value="Оновити">
     </form>
 
 @endsection

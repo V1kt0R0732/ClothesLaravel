@@ -39,12 +39,18 @@ class SizeController extends Controller
     public function store(Request $request)
     {
 
-        $size = new Size();
+        $sizeCheck = Size::where('size_name',$request->input($this->cName))->first();
+        if(!empty($sizeCheck)) {
+            return redirect()->route($this->cName.'.create')->with('error','Розмір вже додано');
+        }
+        else {
+            $size = new Size();
 
-        $size->size_name = $request->input($this->cName);
-        $size->save();
+            $size->size_name = $request->input($this->cName);
+            $size->save();
 
-        return redirect()->route($this->cName.'.create')->with('success','Розмір Успішно Додано');
+            return redirect()->route($this->cName . '.create')->with('success', 'Розмір Успішно Додано');
+        }
     }
 
     /**
@@ -87,10 +93,16 @@ class SizeController extends Controller
     public function destroy(string $id)
     {
 
-        $size = Size::where('size_id', $id)->first();
-        $size->delete();
+        $sizeCheck = Size::where('size_id',$id)->first();
 
-        return redirect()->route($this->cName.'.index')->with('success','Розмір Видалено');
+        if(!empty($sizeCheck)){
+            return redirect()->route('storage.index',['id'=>$id,'mode'=>'size'])->with('error','Категорія використовується в товарах:');
+        }
+        else{
+            $size = Size::where('size_id', $id)->first();
+            $size->delete();
 
+            return redirect()->route($this->cName.'.index')->with('success','Розмір Видалено');
+        }
     }
 }

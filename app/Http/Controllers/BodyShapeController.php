@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BodyShape;
+use App\Models\StorageClothes;
 use Illuminate\Http\Request;
 
 class BodyShapeController extends Controller
@@ -35,13 +36,22 @@ class BodyShapeController extends Controller
      */
     public function store(Request $request)
     {
-        $object = new BodyShape();
-        $name = $this->name;
-        $object->$name = $request->input($this->cName);
-        $object->save();
 
-        return redirect()->route($this->cName.'.create')->with('success','Тип тіла Успішно Додано');
+        $bodyCheck = BodyShape::where('body_shape_id', $request->cName)->first();
 
+        if(!empty($bodyCheck)){
+            return redirect()->route($this->cName.'.create')->with('error','Такий тип вже додано');
+        }
+        else {
+
+            $object = new BodyShape();
+            $name = $this->name;
+            $object->$name = $request->input($this->cName);
+            $object->save();
+
+            return redirect()->route($this->cName . '.create')->with('success', 'Тип тіла Успішно Додано');
+
+        }
     }
 
     /**
@@ -80,10 +90,17 @@ class BodyShapeController extends Controller
      */
     public function destroy(string $id)
     {
-        $object = BodyShape::where($this->id, $id)->first();
-        $object->delete();
+        $bodyCheck = StorageClothes::where('body_shape_id',$id)->first();
 
-        return redirect()->route($this->cName.'.index')->with('success','Тип тіла Видалено');
+        if(!empty($bodyCheck)){
+            return redirect()->route('storage.index',['id'=>$id,'mode'=>'body_shape'])->with('error','Вже використовується в товарах:');
+        }
+        else {
+            $object = BodyShape::where($this->id, $id)->first();
+            $object->delete();
+
+            return redirect()->route($this->cName . '.index')->with('success', 'Тип тіла Видалено');
+        }
 
     }
 }

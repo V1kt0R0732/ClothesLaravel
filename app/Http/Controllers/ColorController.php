@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clothes;
 use Illuminate\Http\Request;
 use App\Models\Color;
+use App\Models\StorageClothes;
 
 class ColorController extends Controller
 {
@@ -39,13 +41,19 @@ class ColorController extends Controller
     public function store(Request $request)
     {
 
-        $color = new Color();
+        $colorCheck = Color::where('color_name',$request->input($this->cName))->first();
 
-        $color->color_name = $request->input($this->cName);
-        $color->save();
+        if(!empty($colorCheck)){
+            return redirect()->route('color.create')->with('error','Колір вже додано');
+        }
+        else{
+            $color = new Color();
 
-        return redirect()->route('color.create')->with('success','Колір Успішно додано');
+            $color->color_name = $request->input($this->cName);
+            $color->save();
 
+            return redirect()->route('color.create')->with('success','Колір Успішно додано');
+        }
     }
 
     /**
@@ -90,10 +98,17 @@ class ColorController extends Controller
     public function destroy(string $id)
     {
 
-        $color = Color::where('color_id', $id)->first();
+        $colorCheck = StorageClothes::where('color_id',$id)->first();
 
-        $color->delete();
+        if(!empty($colorCheck)){
+            return redirect()->route('storage.index',['id'=>$id,'mode'=>'color'])->with('error','Колір використовується в товарах:');
+        }
+        else {
+            $color = Color::where('color_id', $id)->first();
 
-        return redirect()->route($this->cName.'.index')->with('success','Колір Видалено');
+            $color->delete();
+
+            return redirect()->route($this->cName . '.index')->with('success', 'Колір Видалено');
+        }
     }
 }

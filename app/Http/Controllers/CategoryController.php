@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Clothes;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -38,12 +39,19 @@ class CategoryController extends Controller
     {
 
         if(!empty($request->input('category'))) {
-            $category = new Category();
 
-            $category->category_name = $request->input('category');
-            $category->save();
+            $categoryCheck = Category::where('category_name',$request->input('category'))->first();
+            if(!empty($categoryCheck)){
+                return redirect()->route('category.create')->with('error', "Категорія з таким ім'ям вже існує");
+            }
+            else {
+                $category = new Category();
 
-            return redirect()->route('category.create')->with('success', 'Категорія успішно створена');
+                $category->category_name = $request->input('category');
+                $category->save();
+
+                return redirect()->route('category.create')->with('success', 'Категорія успішно створена');
+            }
         }
         else{
             return redirect()->route('category.create')->with('error', 'Поле не може бути пустим');
@@ -91,11 +99,20 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
 
-        $category = Category::where('category_id', $id)->first();
+        $categoryCheck = Clothes::where('category_id', $id)->first();
 
-        $category->delete();
+        if(!empty($categoryCheck)){
+            return redirect()->route('clothes.index', ['id'=>$id, 'mode'=>'category'])->with('error','Цю категорію вже використовують такі товари:');
+        }
+        else{
+            $category = Category::where('category_id', $id)->first();
 
-        return redirect()->route('category.index')->with('success','Категорія Видалена');
+            $category->delete();
+
+            return redirect()->route('category.index')->with('success','Категорія Видалена');
+        }
+
+
 
     }
 }

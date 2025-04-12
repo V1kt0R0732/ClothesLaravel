@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Clothes;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -37,12 +38,25 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        $object = new Supplier();
-        $name = $this->name;
-        $object->$name = $request->input($this->cName);
-        $object->save();
 
-        return redirect()->route($this->cName.'.create')->with('success','Країна виробник Успішно Додано');
+        if(!empty($request->input('supplier'))) {
+            $supplierCheck = Supplier::where('supplier_name', $request->input($this->cName))->first();
+
+            if(!empty($supplierCheck)){
+                return redirect()->route($this->cName . '.create')->with('error','Такий поставщик вже доданий');
+            }
+            else {
+                $object = new Supplier();
+                $name = $this->name;
+                $object->$name = $request->input($this->cName);
+                $object->save();
+
+                return redirect()->route($this->cName . '.create')->with('success', 'Країна виробник Успішно Додано');
+            }
+        }
+        else{
+            return redirect()->route($this->cName . '.create')->with('error','Поле не може бути пустим');
+        }
 
     }
 
@@ -83,6 +97,12 @@ class SupplierController extends Controller
      */
     public function destroy(string $id)
     {
+        $supplierCheck = Clothes::where('supplier_id',$id)->first();
+
+        if(!empty($supplierCheck)){
+            return redirect()->route('clothes.index',['id'=>$id,'mode'=>'supplier'])->with('error','Товар з такою країною використовується');
+        }
+
         $object = Supplier::where($this->id, $id)->first();
         $object->delete();
 

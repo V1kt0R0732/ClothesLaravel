@@ -21,31 +21,63 @@ class StorageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
-            ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
-            ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
-            ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
-            ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
-            ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
-            ->where('photos.status', '=', 1)
-            ->orWhere('photos.status', '=', null)
-//            ->Leftjoin('season_clothes', 'clothes.cloth_id', '=', 'season_clothes.cloth_id')
-//            ->join('seasons', 'season_clothes.season_id', '=', 'seasons.season_id')
-//            ->join('properties', 'clothes.cloth_id', '=', 'properties.cloth_id')
-//            ->join('material_clothes','clothes.cloth_id','=','material_clothes.cloth_id')
-//            ->join('materials', 'material_clothes.material_id', '=', 'materials.material_id')
-            ->get();
+        if(isset($request->search) && !empty($request->search)){
 
-//        $url = Storage::path($storage[0]->photo_name);
-//        $url_2 = Storage::path($storage[0]->photo_name);
-//        print_r($url_2);
-//        echo "<br>";
-//        print_r($url);
+        }
+        elseif(isset($request->mode) && $request->mode == 'color' && isset($request->id) && !empty($request->id)){
+            $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+                ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
+                ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
+                ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
+                ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
+                ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+                ->where('colors.color_id',$request->id)
+                ->where('photos.status', '=', 1)
+                ->orWhere('photos.status', '=', null)
+                ->get();
 
-        //print_r($storage);
+        }
+        elseif(isset($request->mode) && $request->mode == 'size' && isset($request->id) && !empty($request->id)){
+            $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+                ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
+                ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
+                ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
+                ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
+                ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+                ->where('sizes.size_id',$request->id)
+                ->where('photos.status', '=', 1)
+                ->orWhere('photos.status', '=', null)
+                ->get();
+
+        }
+        elseif(isset($request->mode) && $request->mode == 'body_shape' && isset($request->id) && !empty($request->id)){
+            $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+                ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
+                ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
+                ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
+                ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
+                ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+                ->join('body_shapes','storage_clothes.body_shape_id','=','body_shapes.body_shape_id')
+                ->where('body_shapes.body_shape_id',$request->id)
+                ->where('photos.status', '=', 1)
+                ->orWhere('photos.status', '=', null)
+                ->get();
+
+        }
+        else{
+            $storage = StorageClothes::join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+                ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
+                ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
+                ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
+                ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
+                ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+                ->where('photos.status', '=', 1)
+                ->orWhere('photos.status', '=', null)
+                ->get();
+        }
 
 
         return view('admin.storage.index', compact('storage'));

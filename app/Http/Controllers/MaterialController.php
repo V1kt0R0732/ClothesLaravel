@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Models\MaterialClothes;
+use App\Models\StorageClothes;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -38,12 +40,19 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
 
-        $material = new Material();
+        $materialCheck = Material::where('material_name',$request->input($this->cName))->first();
 
-        $material->material_name = $request->input($this->cName);
-        $material->save();
+        if(!empty($materialCheck)){
+            return redirect()->route($this->cName . '.create')->with('error', 'Такий матеріал вже додано');
+        }
+        else{
+            $material = new Material();
 
-        return redirect()->route($this->cName.'.create')->with('success','Матеріал Успішно Додано');
+            $material->material_name = $request->input($this->cName);
+            $material->save();
+
+            return redirect()->route($this->cName . '.create')->with('success', 'Матеріал Успішно Додано');
+        }
 
     }
 
@@ -89,6 +98,12 @@ class MaterialController extends Controller
      */
     public function destroy(string $id)
     {
+
+        $materialCheck = MaterialClothes::where('material_id',$id)->first();
+
+        if(!empty($materialCheck)){
+            return redirect()->route('clothes.index', ['id'=>$id,'mode'=>'material'])->with('error','Колір вже використовується в цих товарах:');
+        }
 
         $material = Material::where('material_id', $id)->first();
         $material->delete();

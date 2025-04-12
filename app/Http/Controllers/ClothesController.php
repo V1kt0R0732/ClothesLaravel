@@ -18,13 +18,50 @@ class ClothesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-            ->join('categories','categories.category_id','=','clothes.category_id')
-            ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-            ->get();
+        if(isset($request->search) && !empty($request->search)){
+
+            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+                ->join('categories','categories.category_id','=','clothes.category_id')
+                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
+                ->where('clothes.cloth_name','like','%'.$request->search.'%')
+                ->orWhere('suppliers.supplier_name','like','%'.$request->search.'%')
+                ->orWhere('categories.category_name','like','%'.$request->search.'%')
+                ->get();
+        }
+        elseif(isset($request->mode) && $request->mode == 'material' && isset($request->id) && !empty($request->id)){
+            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+                ->join('categories','categories.category_id','=','clothes.category_id')
+                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
+                ->join('material_clothes','material_clothes.cloth_id','clothes.cloth_id')
+                ->where('material_clothes.material_id','=', $request->id)
+                ->get();
+        }
+        elseif(isset($request->mode) && $request->mode == 'season' && isset($request->id) && !empty($request->id)){
+            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+                ->join('categories','categories.category_id','=','clothes.category_id')
+                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
+                ->join('season_clothes','season_clothes.cloth_id','clothes.cloth_id')
+                ->where('season_clothes.season_id','=', $request->id)
+                ->get();
+        }
+        elseif(isset($request->mode) && isset($request->id) && !empty($request->id) && !empty($request->mode)){
+            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+                ->join('categories','categories.category_id','=','clothes.category_id')
+                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
+                ->where('clothes.'.$request->mode.'_id', $request->id)
+                ->get();
+        }
+        else{
+            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+                ->join('categories','categories.category_id','=','clothes.category_id')
+                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
+                ->get();
+        }
+
+
 
 
 
