@@ -22,74 +22,75 @@ class ClothesController extends Controller
     {
         $search = '';
         $col = '';
+        //session()->flush();
 
+        $sort = session('sort',['col'=>null,'value'=>null]);
+
+
+        $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
+            ->join('categories','categories.category_id','=','clothes.category_id')
+            ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id');
         if(isset($request->search) && !empty($request->search)){
             $search = $request->search;
-
-            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-                ->join('categories','categories.category_id','=','clothes.category_id')
-                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->where('clothes.cloth_name','like','%'.$search.'%')
+            $clothes = $clothes->where('clothes.cloth_name','like','%'.$search.'%')
                 ->orWhere('suppliers.supplier_name','like','%'.$search.'%')
-                ->orWhere('categories.category_name','like','%'.$search.'%')
-                ->get();
+                ->orWhere('categories.category_name','like','%'.$search.'%');
         }
-        elseif(isset($request->mode) && $request->mode == 'material' && isset($request->id) && !empty($request->id)){
-            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-                ->join('categories','categories.category_id','=','clothes.category_id')
-                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->join('material_clothes','material_clothes.cloth_id','clothes.cloth_id')
-                ->where('material_clothes.material_id','=', $request->id)
-                ->get();
-        }
-        elseif(isset($request->mode) && $request->mode == 'season' && isset($request->id) && !empty($request->id)){
-            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-                ->join('categories','categories.category_id','=','clothes.category_id')
-                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->join('season_clothes','season_clothes.cloth_id','clothes.cloth_id')
-                ->where('season_clothes.season_id','=', $request->id)
-                ->get();
+        elseif((isset($request->mode) && isset($request->id) && !empty($request->id)) && ($request->mode == 'material' || $request->mode == 'season')){
+            $clothes = $clothes->join($request->mode.'_clothes', $request->mode.'_clothes.cloth_id','clothes.cloth_id')
+                ->where($request->mode.'_clothes.'.$request->mode.'_id','=', $request->id);
         }
         elseif(isset($request->mode) && isset($request->id) && !empty($request->id) && !empty($request->mode)){
-            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-                ->join('categories','categories.category_id','=','clothes.category_id')
-                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->where('clothes.'.$request->mode.'_id', $request->id)
-                ->get();
-        }
-        else{
-            $clothes = Clothes::selectRaw('*, (select SUM(count) from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id) as storage_count')
-                ->join('categories','categories.category_id','=','clothes.category_id')
-                ->join('suppliers','suppliers.supplier_id','=','clothes.supplier_id')
-                ->get();
+            $clothes = $clothes->where('clothes.'.$request->mode.'_id', $request->id);
         }
 
 
-        if(isset($request->sort) && !empty($request->sort)){
-            $sort = $request->sort;
-        }
-        else{
-            $sort = 'asc';
-        }
+
         if(isset($request->col) && !empty($request->col)){
-            $col = $request->col;
-            switch($sort){
-                case 'asc':
-                    $sort = 'desc';
-                    print_r("Asc Worked");
-                    $clothes = $clothes->SortBy($col);
-                    break;
-                case 'desc':
-                    $sort = 'asc';
-                    print_r('Desc Worked');
-                    $clothes = $clothes->SortByDesc($col);
-                    break;
-                default:
-                    $sort = 'desc';
-                    print_r("Default Worked");
-                    $clothes = $clothes->SortBy($col);
-            }
+            $sort['col'] = $request->col;
         }
+        if(isset($request->sort) && !empty($request->sort)){
+            $sort['value'] = $request->sort;
+        }
+        else{
+            $sort['value'] = 'asc';
+        }
+
+        //print_r($sort);
+
+        if(isset($sort['col']) && !empty($sort['col'])){
+            switch ($sort['col']) {
+                case 'name':
+                    $sort['col'] = 'clothes.cloth_name';
+                    break;
+                case 'id':
+                    $sort['col'] = 'clothes.cloth_id';
+                    break;
+                case 'category':
+                    $sort['col'] = 'clothes.category_id';
+                    break;
+                case 'supplier':
+                    $sort['col'] = 'clothes.supplier_id';
+                    break;
+            }
+            $clothes = $clothes->OrderBy($sort['col'],$sort['value']);
+        }
+        switch($sort['value']){
+            case 'asc':
+                $sort['value'] = 'desc';
+                break;
+            default:
+                $sort['value'] = 'asc';
+                break;
+        }
+
+        session(['sort' => $sort]);
+
+        if(isset($request->col) && !empty($request->col)) {
+            $sort['col'] = $request->col;
+        }
+
+        $clothes = $clothes->paginate(10);
 
         return view('admin.clothes.list', compact('clothes', 'sort', 'search', 'col'));
 
@@ -161,7 +162,7 @@ class ClothesController extends Controller
         $cloth->category_id = $request->get('category_id');
         $cloth->supplier_id = $request->get('supplier_id');
         $cloth->description = $request->get('description');
-        //$cloth->created_at = now(); // Для попередніх версій, при виклику id потрібно було видлити теперішній час - now()
+        //$cloth->created_at = now(); // Для попередніх версій, при виклику id потрібно було видалити теперішній час - now()
         $cloth->save();
 
         foreach($request->get('materials_id') as $material){

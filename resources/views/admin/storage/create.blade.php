@@ -100,7 +100,7 @@
 
             <!-- Тип тіла -->
             <div class="mb-3">
-                <label for="body_shape" class="form-label">Розмір</label>
+                <label for="body_shape" class="form-label">Тип тіла</label>
                 <select name="body_shape_id" id="body_shape" class="form-select">
                     @foreach($bodyShapes as $bodyShape)
                         <option value="{{ $bodyShape->body_shape_id }}">{{ $bodyShape->body_shape_name }}</option>

@@ -45,7 +45,7 @@
             </td>
             <td>
 {{--                <div style="background-image:url({{  }})"></div> --}}
-                <img src="{{ Storage::url($item->photo_name) }}" width="100px">
+                <img src="{{ !empty($item->photo_name) ? Storage::url($item->photo_name) : Storage::url('images/noPhoto.png') }}" width="100px">
             </td>
             <td>
                 {{ $item->cloth_name }}
