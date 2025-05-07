@@ -14,7 +14,6 @@
                 <a class="btn btn-outline-danger" href="{{route('clothes.index')}}">Скинути</a>
             </div>
         </form>
-
     </div>
 
     @if($clothes->IsNotEmpty())

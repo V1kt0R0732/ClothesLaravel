@@ -26,7 +26,7 @@
         <button class="btn btn-dark" id="menu-toggle"><i class="fa fa-bars"></i></button>
 
         <div class="ms-auto">
-            <h4>{{ $title }}</h4>
+            <a href="{{ url()->current() }}" class="layoutTitle"><h4>{{ $title }}</h4></a>
         </div>
 
         <div class="d-flex align-items-center ms-auto">

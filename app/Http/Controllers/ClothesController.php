@@ -21,8 +21,18 @@ class ClothesController extends Controller
     public function index(Request $request)
     {
         $search = '';
-        $col = '';
+
+        //echo $_SERVER['REQUEST_URI'];
+        //echo $_SERVER['PHP_SELF'];
+        //echo url()->current();
+        //echo url()->full();
+        //echo url()->previous();
+
         //session()->flush();
+        if(url()->full() == url()->current()){
+            session()->forget('sort'); // Очищення сесії при скиданні фільтрів
+        }
+
 
         $sort = session('sort',['col'=>null,'value'=>null]);
 
@@ -73,6 +83,7 @@ class ClothesController extends Controller
                     $sort['col'] = 'clothes.supplier_id';
                     break;
             }
+
             $clothes = $clothes->OrderBy($sort['col'],$sort['value']);
         }
         switch($sort['value']){
@@ -92,7 +103,7 @@ class ClothesController extends Controller
 
         $clothes = $clothes->paginate(10);
 
-        return view('admin.clothes.list', compact('clothes', 'sort', 'search', 'col'));
+        return view('admin.clothes.list', compact('clothes', 'sort', 'search'));
 
     }
 

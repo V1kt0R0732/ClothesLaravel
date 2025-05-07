@@ -52,4 +52,45 @@ document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("click", function() {
         document.getElementById("userMenu").style.display = "none";
     });
+
+    // Фото
+
+
+
+
+    // document.querySelectorAll(".selectable-photo").forEach(function (card) {
+    //     card.addEventListener("click", function () {
+    //         document.querySelectorAll(".selectable-photo").forEach(function (el) {
+    //             el.classList.remove("selected");
+    //             el.querySelector('input[type="radio"]').checked = false;
+    //         });
+    //
+    //         card.classList.add("selected");
+    //         card.querySelector('input[type="radio"]').checked = true;
+    //     });
+    // });
+
+
+    const mainPhotoInput = document.getElementById("mainPhotoInput");
+
+    document.querySelectorAll(".selectable-photo").forEach(function (card) {
+        card.addEventListener("click", function () {
+            // Знімаємо вибір з усіх карток
+            document.querySelectorAll(".selectable-photo").forEach(function (el) {
+                el.classList.remove("selected");
+            });
+
+            // Позначаємо поточну картку як вибрану
+            card.classList.add("selected");
+
+            // Знаходимо значення ID (можна через data-id або атрибут)
+            const photoId = card.getAttribute("data-photo-id");
+            if (mainPhotoInput) {
+                mainPhotoInput.value = photoId;
+            }
+        });
+    });
+
+
 });
+

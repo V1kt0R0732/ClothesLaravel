@@ -18,3 +18,4 @@ Route::resource('admin/supplier','App\Http\Controllers\SupplierController');
 Route::resource('admin/bodyshape','App\Http\Controllers\BodyShapeController');
 Route::resource('admin/clothes','App\Http\Controllers\ClothesController');
 Route::resource('admin/storage','App\Http\Controllers\StorageController');
+Route::post('admin/storage/photo','App\Http\Controllers\StorageController@photoDestroy')->name('storage.photoDestroy');
