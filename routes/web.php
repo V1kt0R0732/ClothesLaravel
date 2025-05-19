@@ -19,3 +19,8 @@ Route::resource('admin/bodyshape','App\Http\Controllers\BodyShapeController');
 Route::resource('admin/clothes','App\Http\Controllers\ClothesController');
 Route::resource('admin/storage','App\Http\Controllers\StorageController');
 Route::post('admin/storage/photo','App\Http\Controllers\StorageController@photoDestroy')->name('storage.photoDestroy');
+Route::post('admin/storage/deleteAll','App\Http\Controllers\StorageController@deleteAll')->name('storage.deleteAll');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

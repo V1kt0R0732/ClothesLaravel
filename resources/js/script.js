@@ -53,24 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("userMenu").style.display = "none";
     });
 
+
     // Фото
-
-
-
-
-    // document.querySelectorAll(".selectable-photo").forEach(function (card) {
-    //     card.addEventListener("click", function () {
-    //         document.querySelectorAll(".selectable-photo").forEach(function (el) {
-    //             el.classList.remove("selected");
-    //             el.querySelector('input[type="radio"]').checked = false;
-    //         });
-    //
-    //         card.classList.add("selected");
-    //         card.querySelector('input[type="radio"]').checked = true;
-    //     });
-    // });
-
-
     const mainPhotoInput = document.getElementById("mainPhotoInput");
 
     document.querySelectorAll(".selectable-photo").forEach(function (card) {
@@ -90,6 +74,43 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
+    // передача id для видалення товарів
+
+    const mainStorageId = document.getElementById('mainStorageId')
+    let storageIdArrayMain = [];
+
+    document.querySelectorAll(".storage-select").forEach(function (card) {
+        card.addEventListener("click", function () {
+
+            let storageId = card.getAttribute("data-storage-id");
+
+            let check = false;
+
+            for (let i = 0; i < storageIdArrayMain.length; i++) {
+                if (storageIdArrayMain[i] === storageId){
+
+                    document.querySelector(".storage-item-"+storageId).classList.remove("storage-selected");
+
+                    check = true;
+                    storageIdArrayMain.splice(i, 1);
+
+                    break;
+                }
+            }
+
+            if(!check){
+                storageIdArrayMain.push(storageId);
+                document.querySelector(".storage-item-"+storageId).classList.add("storage-selected");
+            }
+
+            if(mainStorageId){
+                mainStorageId.value = storageIdArrayMain;
+            }
+
+        });
+    });
+
 
 
 });

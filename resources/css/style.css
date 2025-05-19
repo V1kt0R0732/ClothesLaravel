@@ -135,7 +135,8 @@ main {
     width: 100%;
     border: none;
     margin-bottom: 20px;
-    border-collapse: separate;
+    /*border-collapse: separate;*/
+    /*border-collapse: collapse;*/
 }
 .id {
     width: 15px;
@@ -155,12 +156,12 @@ main {
 .table tr th:last-child, .table tr td:last-child {
     border-right: 1px solid #ddd;
 }
-.table thead tr th:first-child {
-    border-radius: 20px 0 0 0;
-}
-.table thead tr th:last-child {
-    border-radius: 0 20px 0 0;
-}
+/*.table thead tr th:first-child {*/
+/*    border-radius: 20px 0 0 0;*/
+/*}*/
+/*.table thead tr th:last-child {*/
+/*    border-radius: 0 20px 0 0;*/
+/*}*/
 .table tbody td {
     text-align: left;
     border: none;
@@ -226,5 +227,16 @@ main {
 }
 .selectable-photo input[type="radio"] {
     display: none;
+}
+
+/*Storage List*/
+
+.storage-select:hover{
+    cursor: pointer;
+}
+
+.storage-selected td{
+    background-color: #f4f4f4; /* яскравіше */
+    font-weight: bold;
 }
 
