@@ -36,12 +36,12 @@
             <!-- Выпадающее меню пользователя -->
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" id="userDropdown">
-                    <img src="https://via.placeholder.com/30" class="rounded-circle"> Admin
+                    <img src="https://via.placeholder.com/30" class="rounded-circle"> {{Session('user.name')}}
                 </button>
                 <ul class="dropdown-menu" id="userMenu">
-                    <li><a class="dropdown-item" href="#">Профиль</a></li>
+                    <li><a class="dropdown-item" href="{{ route('admin.index') }}">Профіль</a></li>
                     <li><a class="dropdown-item" href="#">Настройки</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">Выйти</a></li>
+                    <li><a class="dropdown-item text-danger" href="{{ route('admin.logout')}}">Вийти</a></li>
                 </ul>
             </div>
         </div>
@@ -56,8 +56,8 @@
             <h4 class="text-center">*Назва сайту</h4>
             <div class="user-info text-center">
                 <img src="https://via.placeholder.com/50" class="rounded-circle mb-2">
-                <p>*Ім`я робітника</p>
-                <small>*Посада</small>
+                <p>{{Session('user.name')}}</p>
+                <small>{{Session('user.permission')}}</small>
             </div>
             <hr>
             <ul class="nav flex-column">
@@ -157,6 +157,17 @@
                     <ul class="submenu">
                         <li><a class="nav-link" href="{{ route('bodyshape.index') }}">Всі</a></li>
                         <li><a class="nav-link" href="{{ route('bodyshape.create') }}">Додати</a></li>
+                    </ul>
+                </li>
+
+                <!-- Користувачі -->
+                <li class="nav-item">
+                    <a class="nav-link toggle-submenu" href="#">
+                        <i class="bi bi-people-fill"></i> User <i class="fa fa-chevron-down float-end"></i>
+                    </a>
+                    <ul class="submenu">
+                        <li><a class="nav-link" href="{{ route('admin.list') }}">Всі</a></li>
+                        <li><a class="nav-link" href="{{ route('admin.registerForm') }}">Додати</a></li>
                     </ul>
                 </li>
             </ul>
