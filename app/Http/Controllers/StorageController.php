@@ -67,6 +67,12 @@ class StorageController extends Controller
                         ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id');
             }
         }
+        elseif(isset($request->mode) && isset($request->id) && !empty($request->id) && ($request->mode == 'clothes')){
+            $storage = $storage->join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
+                ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
+                ->join('body_shapes','storage_clothes.body_shape_id','=','body_shapes.body_shape_id')
+                ->where('storage_clothes.cloth_id',$request->id);
+        }
         else{
             $storage = $storage->join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
                 ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
@@ -371,7 +377,33 @@ class StorageController extends Controller
      */
     public function destroy(string $id)
     {
+        $this->delete($id);
 
+        return redirect()->route('storage.index')->with('success','Товар успішно видалено');
+    }
+
+    public function deleteAll(Request $request){
+
+        if(isset($request->StorageId) && !empty($request->StorageId)) {
+
+            $array = explode(',', $request->input('StorageId'));
+
+            foreach ($array as $id) {
+                if (!empty($id)) {
+                    $this->delete($id);
+                }
+            }
+
+            return redirect()->route('storage.index')->with('success', 'Обрані товари успішно видалено');
+        }
+        else{
+            return redirect()->route('storage.index')->with('error', 'Фото для видалення не обрано');
+
+        }
+
+    }
+
+    private function delete(int $id){
         $storage = StorageClothes::all()->find($id);
 
         // Видалення фото

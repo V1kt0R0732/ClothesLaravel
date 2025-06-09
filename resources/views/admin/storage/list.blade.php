@@ -13,14 +13,19 @@
                 <a class="btn btn-outline-danger" href="{{route('storage.index')}}">Скинути</a>
             </div>
         </form>
+        <div>
+            <form action="{{route('storage.deleteAll')}}" method="post" onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
+                @csrf
+                @method('POST')
+                <input type="hidden" name="StorageId" id="mainStorageId" value="0">
+                <input class="btn btn-outline-danger" value="Видалити виділені товари" type="submit" name="deleteSelected">
+            </form>
+        </div>
     </div>
     <table class="table">
 
         <thead>
         <tr>
-            <th>
-                Оберіть
-            </th>
             <th class="id">
                 <a href="{{route('storage.index',[isset($search) && !empty($search) ? "search=$search" : '','sort'=>$sort['value'],'col'=>'id'])}}">Id</a>
             </th>
@@ -58,17 +63,14 @@
         </thead>
         <tbody>
         @foreach($storage as $item)
-        <tr>
-            <td>
-                <input type="checkbox">
-            </td>
+        <tr class="storage-item-{{$item->storage_cloth_id}}">
             <td>
                 {{ $item->storage_cloth_id }}
             </td>
-            <td>
+            <td class="storage-select" data-storage-id="{{$item->storage_cloth_id}}">
                 <img src="{{ Storage::url($item->photo_name) }}" width="100px">
             </td>
-            <td>
+            <td class="storage-select" data-storage-id="{{$item->storage_cloth_id}}">
                 {{ $item->cloth_name }}
             </td>
             <td>

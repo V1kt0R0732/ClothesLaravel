@@ -18,6 +18,7 @@ Route::resource('admin/supplier','App\Http\Controllers\SupplierController')->mid
 Route::resource('admin/bodyshape','App\Http\Controllers\BodyShapeController')->middleware(AuthorizationCheck::class);
 Route::resource('admin/clothes','App\Http\Controllers\ClothesController')->middleware(AuthorizationCheck::class);
 Route::resource('admin/storage','App\Http\Controllers\StorageController')->middleware(AuthorizationCheck::class);
+Route::post('admin/storage/deleteAll','App\Http\Controllers\StorageController@deleteAll')->name('storage.deleteAll')->middleware(AuthorizationCheck::class);
 Route::post('admin/storage/photo','App\Http\Controllers\StorageController@photoDestroy')->name('storage.photoDestroy')->middleware(AuthorizationCheck::class);
 Route::get('/admin/register/form','App\Http\Controllers\UserController@showRegistrationForm')->name('admin.registerForm')->middleware(AuthorizationCheck::class);
 Route::post('/admin/register','App\Http\Controllers\UserController@register')->name('admin.register')->middleware(AuthorizationCheck::class);

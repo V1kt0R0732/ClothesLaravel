@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //     });
     // });
 
+    // Функція для обирання форми
 
     const mainPhotoInput = document.getElementById("mainPhotoInput");
 
@@ -90,6 +91,44 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
+
+
+    // передача id для видалення товарів
+    const mainStorageId = document.getElementById('mainStorageId')
+    let storageIdArrayMain = [];
+
+    document.querySelectorAll(".storage-select").forEach(function (card) {
+        card.addEventListener("click", function () {
+
+            let storageId = card.getAttribute("data-storage-id");
+
+            let check = false;
+
+            for (let i = 0; i < storageIdArrayMain.length; i++) {
+                if (storageIdArrayMain[i] === storageId){
+
+                    document.querySelector(".storage-item-"+storageId).classList.remove("storage-selected");
+
+                    check = true;
+                    storageIdArrayMain.splice(i, 1);
+
+                    break;
+                }
+            }
+
+            if(!check){
+                storageIdArrayMain.push(storageId);
+                document.querySelector(".storage-item-"+storageId).classList.add("storage-selected");
+            }
+
+            if(mainStorageId){
+                mainStorageId.value = storageIdArrayMain;
+            }
+
+        });
+    });
+
 
 
 });
