@@ -46,23 +46,43 @@
                     <td>
                         {{ $item->email }}
                     </td>
+                    @if($item->id == Session('user.id'))
+                        <td>
+                            {{$item->permission_name}}
+                        </td>
+                        <td>
+                            Неможливо змінити
+                        </td>
+                        <td>
+                            Неможливо видалити
+                        </td>
+                    @else
+                    <form action="{{route('admin.changeId')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$item->id}}">
+                        <td>
+                            <select class="form-select" name="perm">
+                                @foreach($permissions as $perm)
+                                    <option @if($item->permission_name == $perm->name) selected @endif value="{{$perm->permission_id}}">{{$perm->name}}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-sm btn-success">
+                                <a>Змінити</a>
+                            </button>
+                        </td>
+                    </form>
                     <td>
-                        {{ $item->permission_name }}
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-sm">
-                            <a ><i class="bi bi-pencil" style="color:blue"></i></a>
-                        </button>
-                    </td>
-                    <td>
-                        <form action="" method="POST" class="delete-form"  onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
+                        <form action="{{route('admin.delete', $item->id)}}" method="POST" class="delete-form"  onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm delete-btn">
-                                <i class="bi bi-trash3-fill" style="color:red"></i>
+                            <button type="submit" class="btn btn-sm delete-btn btn-danger">
+                                Видалити
                             </button>
                         </form>
                     </td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>

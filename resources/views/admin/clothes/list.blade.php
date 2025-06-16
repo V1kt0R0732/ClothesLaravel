@@ -83,7 +83,7 @@
                         </button>
                     </td>
                     <td>
-                        <form action="" method="POST" class="delete-form"  onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
+                        <form action="{{route('clothes.destroy',['clothes'=>$item->cloth_id])}}" method="POST" class="delete-form"  onsubmit="if(confirm('Ви дійсно хочите видалити товар')){return true}else{return false}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm delete-btn">

@@ -377,6 +377,28 @@ class ClothesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $storage_check = StorageClothes::where('cloth_id', $id)->first();
+
+        if(!empty($storage_check)){
+            return redirect()->route('storage.index',['id'=>$id,'mode'=>'clothes'])->with('error','Видалення неможливе, так як деякі товари ще використовують її');
+        }
+        else{
+
+            $clothes = Clothes::all()->find($id);
+            $materials = MaterialClothes::all()->where('cloth_id',$id);
+            foreach($materials as $material){
+                $material->delete();
+            }
+            $seasons = SeasonClothes::all()->where('cloth_id',$id);
+            foreach($seasons as $season){
+                $season->delete();
+            }
+
+            $clothes->delete();
+
+            return redirect()->route('clothes.index')->with('success','Товар успішно видалено');
+
+        }
+
     }
 }

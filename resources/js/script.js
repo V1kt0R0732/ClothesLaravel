@@ -130,6 +130,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+    // const toggleBtn = document.getElementById("togglePasswordFields");
+    // const section = document.getElementById("passwordFields");
+    //
+    // toggleBtn.addEventListener("click", function () {
+    //     console.log('click');
+    //     section.classList.toggle("open");
+    // });
+
+    const toggleBtn = document.getElementById("togglePasswordFields");
+    const section = document.getElementById("passwordFields");
+    const changePasswordFlag = document.getElementById("changePasswordFlag");
+
+    toggleBtn.addEventListener("click", function () {
+
+        const isOpen = section.classList.toggle("open");
+
+        // Змінюємо значення hidden input
+        if (changePasswordFlag) {
+            changePasswordFlag.value = isOpen ? "1" : "0";
+        }
+    });
+
+
 
 });
 

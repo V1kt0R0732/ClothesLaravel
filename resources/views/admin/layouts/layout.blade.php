@@ -160,6 +160,7 @@
                     </ul>
                 </li>
 
+                @if(Session('user.permission') == 'Owner')
                 <!-- Користувачі -->
                 <li class="nav-item">
                     <a class="nav-link toggle-submenu" href="#">
@@ -170,6 +171,7 @@
                         <li><a class="nav-link" href="{{ route('admin.registerForm') }}">Додати</a></li>
                     </ul>
                 </li>
+                @endif
             </ul>
         </div>
 

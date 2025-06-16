@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthorizationCheck;
+use App\Http\Middleware\PermissionCheck;
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -20,8 +21,8 @@ Route::resource('admin/clothes','App\Http\Controllers\ClothesController')->middl
 Route::resource('admin/storage','App\Http\Controllers\StorageController')->middleware(AuthorizationCheck::class);
 Route::post('admin/storage/deleteAll','App\Http\Controllers\StorageController@deleteAll')->name('storage.deleteAll')->middleware(AuthorizationCheck::class);
 Route::post('admin/storage/photo','App\Http\Controllers\StorageController@photoDestroy')->name('storage.photoDestroy')->middleware(AuthorizationCheck::class);
-Route::get('/admin/register/form','App\Http\Controllers\UserController@showRegistrationForm')->name('admin.registerForm')->middleware(AuthorizationCheck::class);
-Route::post('/admin/register','App\Http\Controllers\UserController@register')->name('admin.register')->middleware(AuthorizationCheck::class);
+Route::get('/admin/register/form','App\Http\Controllers\UserController@showRegistrationForm')->name('admin.registerForm')->middleware(AuthorizationCheck::class)->middleware(PermissionCheck::class);
+Route::post('/admin/register','App\Http\Controllers\UserController@register')->name('admin.register')->middleware(AuthorizationCheck::class)->middleware(PermissionCheck::class);
 Route::get('/admin/register', function () {
     return redirect('admin.loginForm')->with('error', 'Access Denied');
 });
@@ -37,3 +38,8 @@ Route::post('/admin/user/edit','App\Http\Controllers\UserController@edit')->name
 Route::get('/admin/edit', function () {
     return redirect('admin.loginForm')->with('error', 'Access Denied');
 });
+Route::post('/admin/user/changeId','App\Http\Controllers\UserController@changeId')->name('admin.changeId')->middleware(AuthorizationCheck::class)->middleware(PermissionCheck::class);
+Route::get('/admin/user/changeId', function () {
+    return redirect('admin.loginForm')->with('error', 'Access Denied');
+});
+Route::delete('/admin/user/delete/{id}','App\Http\Controllers\UserController@delete')->name('admin.delete')->middleware(AuthorizationCheck::class)->middleware(PermissionCheck::class);
