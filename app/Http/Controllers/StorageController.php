@@ -36,7 +36,8 @@ class StorageController extends Controller
             ->Leftjoin('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
             ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
             ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
-            ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id');
+            ->Leftjoin('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+            ->where('photos.status', 1);
 
 
 

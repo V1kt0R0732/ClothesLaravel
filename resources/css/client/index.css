@@ -1,0 +1,26 @@
+.banner {
+    background-image: url('/resources/images/banner.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 320px;
+}
+
+.cart {
+    font-size: 1.2rem;
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 320px;
+}
+
+.cart-href{
+    color:black;
+    text-decoration: none;
+}

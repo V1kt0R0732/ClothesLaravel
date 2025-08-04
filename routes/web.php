@@ -8,7 +8,6 @@ use App\Http\Middleware\PermissionCheck;
 //    return view('welcome');
 //});
 
-Route::get('/','App\Http\Controllers\ClothesController@index')->name('home');
 Route::get('/admin/home','App\Http\Controllers\ClothesController@adminHome')->name('admin.home')->middleware(AuthorizationCheck::class);
 Route::resource('admin/category','App\Http\Controllers\CategoryController')->middleware(AuthorizationCheck::class);
 Route::resource('admin/color','App\Http\Controllers\ColorController')->middleware(AuthorizationCheck::class);
@@ -43,3 +42,13 @@ Route::get('/admin/user/changeId', function () {
     return redirect('admin.loginForm')->with('error', 'Access Denied');
 });
 Route::delete('/admin/user/delete/{id}','App\Http\Controllers\UserController@delete')->name('admin.delete')->middleware(AuthorizationCheck::class)->middleware(PermissionCheck::class);
+
+// Початок Клієнтської частини
+
+Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+Route::get('/about', 'App\Http\Controllers\HomeController@about')->name('about');
+Route::get('/contact', 'App\Http\Controllers\HomeController@contact')->name('contact');
+Route::get('/catalog', 'App\Http\Controllers\HomeController@catalog')->name('catalog');
+
+Route::get('/catalog/{id}','App\Http\Controllers\HomeController@show')->name('catalog.show');
