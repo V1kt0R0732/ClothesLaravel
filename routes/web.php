@@ -51,4 +51,4 @@ Route::get('/about', 'App\Http\Controllers\HomeController@about')->name('about')
 Route::get('/contact', 'App\Http\Controllers\HomeController@contact')->name('contact');
 Route::get('/catalog', 'App\Http\Controllers\HomeController@catalog')->name('catalog');
 
-Route::get('/catalog/{id}','App\Http\Controllers\HomeController@show')->name('catalog.show');
+Route::get('/catalog/{id}/{photo_id}','App\Http\Controllers\HomeController@show')->name('catalog.show');

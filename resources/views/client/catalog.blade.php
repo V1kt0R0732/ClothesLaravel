@@ -155,9 +155,9 @@
                     @foreach($clothes as $item)
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <a href="{{route('catalog.show',$item->storage_cloth_id)}}"><img src="{{Storage::url($item->photo_name)}}" class="card-img-top" alt="Детская куртка"></a>
+                            <a href="{{route('catalog.show',['id'=>$item->storage_cloth_id,'photo_id'=>$item->photo_id])}}"><img src="{{Storage::url($item->photo_name)}}" class="card-img-top" alt="Детская куртка"></a>
                             <div class="card-body d-flex flex-column">
-                                <a href="{{route('catalog.show',$item->storage_cloth_id)}}" class="cart-href">
+                                <a href="{{route('catalog.show',[$item->storage_cloth_id, 'photo_id'=>$item->photo_id])}}" class="cart-href">
                                     <h5 class="card-title">{{$item->cloth_name}}</h5>
                                 </a>
                                 <p class="card-text mb-4">{{$item->price}}₴</p>
@@ -166,7 +166,6 @@
                         </div>
                     </div>
                     @endforeach
-                    <!-- ...добавьте другие карточки товаров по аналогии... -->
                 </div>
                 <!-- Пагинация -->
                 <nav>

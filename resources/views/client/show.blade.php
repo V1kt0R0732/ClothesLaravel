@@ -7,15 +7,25 @@
 @section('content')
     <div class="container">
         <div class="product">
-            <div class="product-image">
-                <img src="{{Storage::url($main_photo->photo_name)}}" alt="Футболка Classic Oversize">
+            <div class="product-gallery">
+                {{--   Додаткові фото товара         --}}
+                <img src="{{Storage::url($selected_photo->photo_name)}}" class="selected-image" alt="Футболка Classic Oversize">
+                <div class="additional-photos">
+                    @foreach($photos as $photo)
+                        <a href="{{route('catalog.show', ['id'=>$clothes_main->storage_cloth_id, 'photo_id'=>$photo->photo_id])}}" data-lightbox="product-gallery">
+                            <img src="{{Storage::url($photo->photo_name)}}" alt="Додаткове фото" class="additional-photo">
+                        </a>
+                    @endforeach
+                </div>
             </div>
+            {{--   Додаткові фото товара         --}}
+
+
             <div class="product-details">
                 <h1>Футболка Oversize Classic</h1>
 
                 <!-- Вибір характеристик -->
                 <div class="select-fields">
-
                     <!-- Розмір -->
                     <div class="form-group">
                         <label>Розмір:</label>
@@ -26,7 +36,7 @@
                                     {{$item->size_name}}
                                 </button>
                                 @else
-                                    <a href="{{route('catalog.show', $item->storage_id)}}">
+                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$selected_photo])}}">
                                         <button type="button" class="option-btn" >
                                             {{$item->size_name}}
                                         </button>
@@ -46,7 +56,7 @@
                                         {{$item->color_name}}
                                     </button>
                                 @else
-                                    <a href="{{route('catalog.show', $item->storage_id)}}">
+                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$selected_photo])}}">
                                         <button type="button" class="option-btn">
                                             {{$item->color_name}}
                                         </button>
@@ -66,7 +76,7 @@
                                         {{$item->body_shape_name}}
                                     </button>
                                 @else
-                                    <a href="{{route('catalog.show', $item->storage_id)}}">
+                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$selected_photo])}}">
                                         <button type="button" class="option-btn">
                                             {{$item->body_shape_name}}
                                         </button>
@@ -75,7 +85,6 @@
                             @endforeach
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Інформаційні характеристики -->

@@ -182,7 +182,7 @@ class HomeController extends Controller
 
     }
 
-    public function show($id){
+    public function show($id, $photo_id){
 
         $clothes_main = StorageClothes::join('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
             ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
@@ -192,22 +192,14 @@ class HomeController extends Controller
             ->where('storage_clothes.storage_cloth_id', '=', $id)
             ->get()->first();
         $photos = Photo::where('storage_cloth_id', '=', $id)->get();
-        $main_photo = $photos->where('status', '=', 1)->first();
+        $selected_photo = $photos->where('photo_id',$photo_id)->first();
+
+
         $materials = Material::join('material_clothes', 'materials.material_id', '=', 'material_clothes.material_id')
             ->where('material_clothes.cloth_id', '=', $clothes_main->cloth_id)
             ->get();
         $materials = implode(" / ", $materials->pluck('material_name')->toArray());
 
-        $clothes_sec = StorageClothes::join('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
-            ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
-            ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
-            ->join('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
-            ->join('sizes', 'storage_clothes.size_id', '=', 'sizes.size_id')
-            ->join('colors', 'storage_clothes.color_id', '=', 'colors.color_id')
-            ->join('body_shapes', 'storage_clothes.body_shape_id', '=', 'body_shapes.body_shape_id')
-            ->where('photos.status', '=', 1)
-            ->where('clothes.cloth_id', '=', $clothes_main->cloth_id)
-            ->get();
 
         $sizes_tmp = StorageClothes::select('size_id')
             ->where('cloth_id', '=', $clothes_main->cloth_id)
@@ -257,7 +249,7 @@ class HomeController extends Controller
 
         //dd($properties);
 
-        return view('client.show', compact( 'clothes_main', 'photos', 'main_photo', 'clothes_sec','materials','sizes','seasons','properties','colors', 'body_shapes'));
+        return view('client.show', compact( 'clothes_main', 'photos', 'selected_photo','materials','sizes','seasons','properties','colors', 'body_shapes'));
     }
 
 

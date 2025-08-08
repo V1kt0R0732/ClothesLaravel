@@ -9,13 +9,32 @@
     align-items: flex-start;
 }
 
-.product-image img {
+.product-gallery{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;}
+
+.selected-image {
     width: 340px;
     height: 420px;
     object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
+.additional_photos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.additional-photo{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
 .select-fields {
     display: flex;
     flex-direction: column;
