@@ -12,9 +12,11 @@
                 <img src="{{Storage::url($selected_photo->photo_name)}}" class="selected-image" alt="Футболка Classic Oversize">
                 <div class="additional-photos">
                     @foreach($photos as $photo)
-                        <a href="{{route('catalog.show', ['id'=>$clothes_main->storage_cloth_id, 'photo_id'=>$photo->photo_id])}}" data-lightbox="product-gallery">
-                            <img src="{{Storage::url($photo->photo_name)}}" alt="Додаткове фото" class="additional-photo">
-                        </a>
+                        @if($photo->photo_id != $selected_photo->photo_id)
+                            <a href="{{route('catalog.show', ['id'=>$clothes_main->storage_cloth_id, 'photo_id'=>$photo->photo_id])}}" data-lightbox="product-gallery">
+                                <img src="{{Storage::url($photo->photo_name)}}" alt="Додаткове фото" class="additional-photo">
+                            </a>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -22,10 +24,27 @@
 
 
             <div class="product-details">
-                <h1>Футболка Oversize Classic</h1>
+                <h1>{{$clothes_main->cloth_name}}</h1>
 
                 <!-- Вибір характеристик -->
                 <div class="select-fields">
+                    {{--
+                    <div class="form-group">
+                        <div class="btn-group size-selector" role="group">
+                            <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off">
+                            <label class="btn btn-size" for="sizeS">S</label>
+
+                            <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off" checked>
+                            <label class="btn btn-size" for="sizeM">M</label>
+
+                            <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off">
+                            <label class="btn btn-size" for="sizeL">L</label>
+
+                            <input type="radio" class="btn-check" name="size" id="sizeXL" autocomplete="off">
+                            <label class="btn btn-size" for="sizeXL">XL</label>
+                        </div>
+                    </div>
+                    --}}
                     <!-- Розмір -->
                     <div class="form-group">
                         <label>Розмір:</label>
@@ -36,7 +55,7 @@
                                     {{$item->size_name}}
                                 </button>
                                 @else
-                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$selected_photo])}}">
+                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$item->photo_id])}}">
                                         <button type="button" class="option-btn" >
                                             {{$item->size_name}}
                                         </button>
@@ -56,7 +75,7 @@
                                         {{$item->color_name}}
                                     </button>
                                 @else
-                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$selected_photo])}}">
+                                    <a href="{{route('catalog.show', ['id'=>$item->storage_id, 'photo_id'=>$item->photo_id])}}">
                                         <button type="button" class="option-btn">
                                             {{$item->color_name}}
                                         </button>
@@ -100,7 +119,16 @@
                     </p>
                 </div>
 
-                <a href="#" class="buy-btn">Додати в кошик</a>
+                <a class="buy-btn" href="{{ route('basket.add') }}"
+                   onclick="event.preventDefault();
+                                                 document.getElementById('basket-add-form').submit();">
+                    {{ __('Buy Button') }}
+                </a>
+
+                <form id="basket-add-form" action="{{ route('basket.add') }}" method="POST" class="d-none">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $clothes_main->storage_cloth_id }}">
+                </form>
             </div>
         </div>
 

@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Administrator;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 
-class UserController extends Controller
+class AdministratorController extends Controller
 {
 
     public function index(){
         return view('admin.user.index');
     }
     public function list(){
-        $users = User::join('permissions','permissions.permission_id','=','users.permission_id')->select('users.*','permissions.name as permission_name')->orderBy('permission_name','asc')->get();
+        $users = Administrator::join('permissions','permissions.permission_id','=','administrators.permission_id')->select('administrators.*','permissions.name as permission_name')->orderBy('permission_name','asc')->get();
         $permissions = Permission::all();
 
         return view('admin.user.list', compact('users','permissions'));
@@ -33,7 +33,7 @@ class UserController extends Controller
             return redirect()->route('admin.registerForm')->with('error', 'Невірний пароль');
         }
 
-        $user = new User();
+        $user = new Administrator();
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -54,11 +54,11 @@ class UserController extends Controller
     public function login(Request $request){
 
         try {
-            $user = User::where('email', $request->input('email'))->first();
+            $user = Administrator::where('email', $request->input('email'))->first();
 
             if (Hash::check($request->input('password'), $user->password)) {
 
-                $perm = Permission::join('users','permissions.permission_id','=','users.permission_id')->where('users.email', $user->email)->select('permissions.name')->first();
+                $perm = Permission::join('administrators','permissions.permission_id','=','administrators.permission_id')->where('administrators.email', $user->email)->select('permissions.name')->first();
 
                 session(['user' => ['id' => $user->id, 'name' => $user->name, 'email' => $user->email,'avatar' => $user->avatar,'permission' => $perm->name]]);
 
@@ -77,13 +77,13 @@ class UserController extends Controller
 
     public function edit(Request $request){
 
-        $user = User::where('email', Session('user.email'))->first();
+        $user = Administrator::where('email', Session('user.email'))->first();
 
         if (Hash::check($request->input('old_password'), $user->password)) {
             $message = [];
 
 //            Зміна E-mail
-            $emailCheck = User::where('email', $request->input('email'))->first();
+            $emailCheck = Administrator::where('email', $request->input('email'))->first();
             if(isset($emailCheck) && !empty($emailCheck)){
                 $user->email = $request->input('email');
                 session(['user.email' => $user->email]);
@@ -137,7 +137,7 @@ class UserController extends Controller
 
     public function changeId(Request $request){
 
-        $user = User::where('id', $request->input('id'))->first();
+        $user = Administrator::where('id', $request->input('id'))->first();
         $user->permission_id = $request->input('perm');
         $user->update();
 

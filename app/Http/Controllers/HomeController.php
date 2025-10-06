@@ -25,7 +25,19 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('client.index');
+
+        $storage_ids = DB::table('clothes')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = clothes.cloth_id limit 1) as storage_id")->limit(4)->inRandomOrder()->get()->pluck('storage_id');
+
+        $clothes = StorageClothes::select('*')->join('photos', 'storage_clothes.storage_cloth_id', '=', 'photos.storage_cloth_id')
+            ->join('clothes', 'storage_clothes.cloth_id', '=', 'clothes.cloth_id')
+            ->join('categories', 'clothes.category_id', '=', 'categories.category_id')
+            ->join('suppliers', 'clothes.supplier_id', '=', 'suppliers.supplier_id')
+            ->whereIn('storage_clothes.storage_cloth_id', $storage_ids)
+            ->where('photos.status', '=', 1)
+            ->get();
+
+
+        return view('client.index', compact('clothes'));
     }
     public function about(){
         return view('client.about');
@@ -207,7 +219,9 @@ class HomeController extends Controller
 
         $sizes_ids = Size::whereIn('size_id', $sizes_tmp)->get();
 
-        $sizes = DB::table('sizes')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = sizes.size_id limit 1) as storage_id, sizes.*")
+
+        // PS:Для майбутнього. Запит спочатку вибирає перший storage_cloth_id для кожного розміру, а потім вибирає фото для цього storage_cloth_id і всі розміри.
+        $sizes = DB::table('sizes')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = sizes.size_id limit 1) as storage_id, (select photo_id from photos where status = 1 and storage_cloth_id = (select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = sizes.size_id limit 1)) as photo_id, sizes.*")
             ->whereIn('sizes.size_id', $sizes_ids->pluck('size_id'))
             ->get();
 
@@ -221,7 +235,7 @@ class HomeController extends Controller
 
         $colors_ids = Color::whereIn('color_id', $colors_tmp)->get();
 
-        $colors = DB::table('colors')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = colors.color_id limit 1) as storage_id, colors.*")
+        $colors = DB::table('colors')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = colors.color_id limit 1) as storage_id, (select photo_id from photos where status = 1 and storage_cloth_id = (select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = colors.color_id limit 1)) as photo_id, colors.*")
             ->whereIn('colors.color_id', $colors_ids->pluck('color_id'))
             ->get();
 
@@ -234,9 +248,10 @@ class HomeController extends Controller
 
         $body_shape_ids = BodyShape::whereIn('body_shape_id', $body_shape_tmp)->get();
 
-        $body_shapes = DB::table('body_shapes')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = $clothes_main->color_id and storage_clothes.body_shape_id = body_shapes.body_shape_id limit 1) as storage_id, body_shapes.*")
+        $body_shapes = DB::table('body_shapes')->selectRaw("(select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = $clothes_main->color_id and storage_clothes.body_shape_id = body_shapes.body_shape_id limit 1) as storage_id, (select photo_id from photos where status = 1 and storage_cloth_id = (select storage_clothes.storage_cloth_id from storage_clothes where storage_clothes.cloth_id = $clothes_main->cloth_id and storage_clothes.size_id = $clothes_main->size_id and storage_clothes.color_id = $clothes_main->color_id and storage_clothes.body_shape_id = body_shapes.body_shape_id limit 1)) as photo_id, body_shapes.*")
             ->whereIn('body_shapes.body_shape_id', $body_shape_ids->pluck('body_shape_id'))
             ->get();
+
 
         // Отримання сезонів, до яких відноситься цей одяг
         $seasons = Season::join('season_clothes', 'seasons.season_id', '=', 'season_clothes.season_id')

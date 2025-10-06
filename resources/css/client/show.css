@@ -91,4 +91,39 @@
     border-radius: 4px;
     font-weight: bold;
 }
+/* Компактные кнопки выбора размера */
+.btn-size {
+    border: 1.5px solid #ccc;
+    color: #333;
+    padding: 0.25rem 0.6rem; /* Меньше отступы */
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.2;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Наведение */
+.btn-size:hover {
+    border-color: #ff7b00;
+    color: #ff7b00;
+}
+
+/* Активная кнопка */
+.btn-check:checked + .btn-size {
+    background-color: #ff7b00;
+    color: #fff;
+    border-color: #ff7b00;
+    box-shadow: 0 0 4px rgba(255, 123, 0, 0.4);
+}
+
+/* Отключённая кнопка */
+.btn-check:disabled + .btn-size {
+    background-color: #f7f7f7;
+    color: #aaa;
+    border-color: #ddd;
+    cursor: not-allowed;
+}
+
 

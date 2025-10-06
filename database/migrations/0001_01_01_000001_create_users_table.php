@@ -18,11 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->default('images/noPhoto.png');
-            $table->bigInteger('permission_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('permission_id')->references('permission_id')->on('permissions');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

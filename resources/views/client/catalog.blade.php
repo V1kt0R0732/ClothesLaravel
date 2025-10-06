@@ -119,7 +119,7 @@
                     <div class="mb-3">
                         <label class="form-label">Одяг до - </label>
                         <span id="priceValue"></span>
-                        <input type="range" class="form-range" name="price" min="{{$prices['min']}}" max="{{$prices['max']}}" step="50" value="{{$selectedPrice}}" id="priceRange">
+                        <input type="range" class="form-range" name="price" min="{{$prices['min']}}" max="{{$prices['max']}}" step="1" value="{{$selectedPrice}}" id="priceRange">
                         <div class="d-flex justify-content-between">
                             <span>{{$prices['min']}}₴</span>
                             <span>{{$prices['max']}}₴</span>
@@ -161,7 +161,7 @@
                                     <h5 class="card-title">{{$item->cloth_name}}</h5>
                                 </a>
                                 <p class="card-text mb-4">{{$item->price}}₴</p>
-                                <a href="#" class="btn btn-primary mt-auto">В корзину</a>
+                                <a href="{{route('catalog.show', [$item->storage_cloth_id, 'photo_id'=>$item->photo_id])}}" class="btn btn-primary mt-auto">Детальніше</a>
                             </div>
                         </div>
                     </div>
